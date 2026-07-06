@@ -5,7 +5,7 @@ Created on 02-07-2026
 @author: Thommes Eliott
 """
 
-# Library for data storage and treatment 
+# Library for management of lagamine data and its treatment. It is used to store data from different sources and to treat them.
 
 
 # Other Lib
@@ -15,15 +15,14 @@ Created on 02-07-2026
 
 
 """
-Storage: Generic class for data storage and treatment. It is used to store data from different sources and to treat them.
+Lagamine: Generic class for the management of data from different sources. 
+It is used to store data and to treat them.
 
 # Improvement to be done:
 - 
 """
-class Storage(ABC):
-    def __init__(self, filepath: str | Path,
-        name: str | None = None,
-    ):
+class Lagamine():
+    def __init__(self, filepath: str, Name: str | None = None):
         # Metadata
         self._Name = Name
         
