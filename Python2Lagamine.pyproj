@@ -91,6 +91,7 @@
     <Content Include="CITATION.cff" />
     <Content Include="LICENSE" />
     <Content Include="pyproject.toml" />
+    <Content Include="Architecture.md" />
     <Content Include="README.md" />
     <Content Include="requirements-dev.txt" />
     <Content Include="requirements.txt" />
