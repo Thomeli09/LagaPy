@@ -43,18 +43,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Python2Lagamine.py" />
-    <Compile Include="RunFile2_1.py" />
     <Compile Include="RunFile2.py" />
-    <Compile Include="RunFile.py">
+    <Compile Include="RunFile1.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="src\lagapy\acquisition\session.py" />
     <Compile Include="src\lagapy\acquisition\__init__.py" />
-    <Compile Include="src\lagapy\config\settings.py" />
-    <Compile Include="src\lagapy\config\__init__.py" />
-    <Compile Include="src\lagapy\core\exceptions.py" />
-    <Compile Include="src\lagapy\core\models.py" />
-    <Compile Include="src\lagapy\core\__init__.py" />
     <Compile Include="src\lagapy\data\analysis.py" />
     <Compile Include="src\lagapy\data\processing.py" />
     <Compile Include="src\lagapy\data\__init__.py" />
@@ -63,17 +57,6 @@
     <Compile Include="src\lagapy\interfaces\__init__.py" />
     <Compile Include="src\lagapy\logging\setup.py" />
     <Compile Include="src\lagapy\logging\__init__.py" />
-    <Compile Include="src\lagapy\scale\client.py" />
-    <Compile Include="src\lagapy\scale\protocols\and_weighing.py" />
-    <Compile Include="src\lagapy\scale\protocols\base.py" />
-    <Compile Include="src\lagapy\scale\protocols\legacy_multiline.py" />
-    <Compile Include="src\lagapy\scale\protocols\mettler_toledo.py" />
-    <Compile Include="src\lagapy\scale\protocols\registry.py" />
-    <Compile Include="src\lagapy\scale\protocols\__init__.py" />
-    <Compile Include="src\lagapy\scale\transport\base.py" />
-    <Compile Include="src\lagapy\scale\transport\serial.py" />
-    <Compile Include="src\lagapy\scale\transport\__init__.py" />
-    <Compile Include="src\lagapy\scale\__init__.py" />
     <Compile Include="src\lagapy\storage\base.py" />
     <Compile Include="src\lagapy\storage\csv_recorder.py" />
     <Compile Include="src\lagapy\storage\io.py" />
@@ -85,10 +68,8 @@
     <Compile Include="src\lagapy\times\__init__.py" />
     <Compile Include="src\lagapy\utils\decimals.py" />
     <Compile Include="src\lagapy\utils\__init__.py" />
-    <Compile Include="src\lagapy\visualization\plots.py" />
     <Compile Include="src\lagapy\visualization\__init__.py" />
     <Compile Include="src\lagapy\__init__.py" />
-    <Compile Include="src\lagapy\__main__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\" />
@@ -96,29 +77,23 @@
     <Folder Include="src\" />
     <Folder Include="src\lagapy\" />
     <Folder Include="src\lagapy\acquisition\" />
-    <Folder Include="src\lagapy\config\" />
-    <Folder Include="src\lagapy\core\" />
     <Folder Include="src\lagapy\data\" />
     <Folder Include="src\lagapy\interfaces\" />
     <Folder Include="src\lagapy\logging\" />
-    <Folder Include="src\lagapy\scale\" />
-    <Folder Include="src\lagapy\scale\protocols\" />
-    <Folder Include="src\lagapy\scale\transport\" />
     <Folder Include="src\lagapy\storage\" />
     <Folder Include="src\lagapy\times\" />
     <Folder Include="src\lagapy\utils\" />
     <Folder Include="src\lagapy\visualization\" />
     <Folder Include="tests\" />
-    <Folder Include="tests\integration\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CHANGELOG.md" />
     <Content Include="CITATION.cff" />
+    <Content Include="LICENSE" />
     <Content Include="pyproject.toml" />
     <Content Include="README.md" />
     <Content Include="requirements-dev.txt" />
     <Content Include="requirements.txt" />
-    <Content Include="src\lagapy\py.typed" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

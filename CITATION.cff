@@ -1,14 +1,14 @@
 cff-version: 1.2.0
 message: "If you use this research software, cite this reference."
 type: software
-title: "Balance Measurement: Modular RS232 laboratory scale acquisition"
+title: "LagaPy"
 authors:
   - family-names: Thommes
     given-names: Eliott
     orcid: https://orcid.org/0009-0005-0697-2438
 version: 0.3.0
-license: MIT
-repository-code: https://github.com/Thomeli09/balance_measurement
+license: GPL-3.0-or-later
+repository-code: https://github.com/Thomeli09/lagapy
 keywords:
   - Python
   - RS232

@@ -1,6 +1,6 @@
-# Balance Measurement
+# LagaPy
 
-**Balance Measurement** (`balance_measurement`) is a Python toolkit for connecting a computer to a laboratory balance through **RS-232 or a USB-to-serial adapter**, reading its measurements and recording them in different file formats.
+**LagaPy** (`lagapy`) is a Python toolkit.
 
 The code is organized so that **balance protocols**, **serial communication**, **measurement acquisition**, **data processing**, and **file storage** can be changed independently. It is intended to be easy to extend when you change manufacturer or add a new export format.
 
@@ -215,15 +215,15 @@ Contributions are welcome, especially for additional weighing protocols, USB/RS-
 
 ## Citation
 
-If you use `balance_measurement` in scientific or published work, please cite the project. The reference metadata is stored in [`CITATION.cff`](CITATION.cff).
+If you use `lagapy` in scientific or published work, please cite the project. The reference metadata is stored in [`CITATION.cff`](CITATION.cff).
 
 ```bibtex
-@software{Thommes_BalanceMeasurement_2026,
+@software{Thommes_LagaPy_2026,
   author  = {Thommes, Eliott},
-  title   = {Balance Measurement: Modular RS232 laboratory scale acquisition},
+  title   = {LagaPy: },
   year    = {2026},
   version = {0.3.0},
-  url     = {https://github.com/Thomeli09/balance_measurement}
+  url     = {https://github.com/Thomeli09/lagapy}
 }
 ```
 
