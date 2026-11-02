@@ -32,6 +32,7 @@ class LagRun():
         self._comment = None
 
         # Input file
+        self._workdirectory = None
         self._prepro = None
         self._lagamine = None
 
@@ -66,6 +67,21 @@ class LagRun():
         self._comment = comment
 
     # Input file
+    @property
+    def workdirectory(self) -> str:
+        return self._workdirectory
+
+    @workdirectory.setter
+    def workdirectory(self, workdirectory: str) -> None:
+        Path(self.workdirectory).mkdir(parents=True, exist_ok=True)
+
+        path = Path(workdirectory)
+
+        if path.exists() and path.is_dir():
+            self._workdirectory = path.resolve().as_posix()
+        else:
+            raise FileNotFoundError(f"Work directory not found: {workdirectory}")
+
     @property
     def prepro(self) -> str:
         return self._prepro
@@ -184,6 +200,14 @@ class LagRun():
         if not all([self.prepro is not None, self.lag is not None]):
             raise FileNotFoundError("One or more required files are missing.")
 
+        if self.workdirectory is not None:
+            # Change the current working directory to the specified work directory
+            try:
+                subprocess.run(["cd", self.workdirectory], shell=True, check=True)
+            except Exception as e:
+                print(f"An error occurred while changing the working directory: {e}")
+                return
+
         try:
             subprocess.run(
                 [
@@ -203,7 +227,15 @@ class LagRun():
         # Verifies that all the needed files are present before running the executable
         if not all([self.lagamine is not None, self.dat is not None, self.lag is not None]):
             raise FileNotFoundError("One or more required files are missing.")
-        
+
+        if self.workdirectory is not None:
+            # Change the current working directory to the specified work directory
+            try:
+                subprocess.run(["cd", self.workdirectory], shell=True, check=True)
+            except Exception as e:
+                print(f"An error occurred while changing the working directory: {e}")
+                return
+
         try:
             subprocess.run(
                 [
@@ -226,6 +258,9 @@ class LagRun():
             raise FileNotFoundError("One or more required files are missing.")
 
         bat_content = "@echo off\n"
+        if self.workdirectory is not None:
+            bat_content += f'cd "{self.workdirectory}"\n'
+
         if prepro:
             bat_content += f'"{self.prepro}" "{self.lag}" x\n'
             
