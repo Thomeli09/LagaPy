@@ -36,6 +36,8 @@
     <Compile Include="LagPri.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="src\lagapy\out\lagout.py" />
+    <Compile Include="src\lagapy\out\__init__.py" />
     <Compile Include="src\lagapy\run\LagRun.py">
       <SubType>Code</SubType>
     </Compile>
@@ -47,8 +49,8 @@
     <Compile Include="src\lagapy\run\RunFile1.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="src\lagapy\acquisition\session.py" />
-    <Compile Include="src\lagapy\acquisition\__init__.py" />
+    <Compile Include="src\lagapy\io\session.py" />
+    <Compile Include="src\lagapy\io\__init__.py" />
     <Compile Include="src\lagapy\data\analysis.py" />
     <Compile Include="src\lagapy\data\processing.py" />
     <Compile Include="src\lagapy\data\__init__.py" />
@@ -79,10 +81,11 @@
     <Folder Include="examples\" />
     <Folder Include="src\" />
     <Folder Include="src\lagapy\" />
-    <Folder Include="src\lagapy\acquisition\" />
+    <Folder Include="src\lagapy\io\" />
     <Folder Include="src\lagapy\data\" />
     <Folder Include="src\lagapy\interfaces\" />
     <Folder Include="src\lagapy\logging\" />
+    <Folder Include="src\lagapy\out\" />
     <Folder Include="src\lagapy\run\" />
     <Folder Include="src\lagapy\storage\" />
     <Folder Include="src\lagapy\times\" />
