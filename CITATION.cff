@@ -1,15 +1,22 @@
 cff-version: 1.2.0
-message: "If you use this research software, cite this reference."
+message: "If you use LagaPy in research, please cite this software."
 type: software
-title: "LagaPy"
+title: "LagaPy: Python tools for Lagamine finite element workflows"
+abstract: >-
+  An in-development Python toolkit for reading, writing, running and
+  post-processing Lagamine finite element simulations.
 authors:
   - family-names: Thommes
     given-names: Eliott
-    orcid: https://orcid.org/0009-0005-0697-2438
-version: 0.3.0
+    orcid: "https://orcid.org/0009-0005-0697-2438"
+version: "0.1.0.dev0"
+date-released: "2026-11-04"
 license: GPL-3.0-or-later
-repository-code: https://github.com/Thomeli09/lagapy
+repository-code: "https://github.com/Thomeli09/lagapy"
 keywords:
   - Python
-  - RS232
-  - laboratory measurement
+  - Lagamine
+  - finite element method
+  - geotechnical engineering
+  - metal forming
+  - numerical simulation
