@@ -23,6 +23,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="examples\visualization_basic.py" />
+    <Compile Include="examples\visualization_advanced.py" />
+    <Compile Include="examples\visualization_shapes.py" />
     <Compile Include="examples\run_lagamine.py" />
     <Compile Include="legacy\execution_original\logging\setup.py" />
     <Compile Include="legacy\execution_original\logging\__init__.py" />
@@ -62,13 +65,18 @@
     <Compile Include="src\lagapy\storage\__init__.py" />
     <Compile Include="src\lagapy\times\stopwatch.py" />
     <Compile Include="src\lagapy\times\__init__.py" />
-    <Compile Include="src\lagapy\utils\decimals.py" />
+    <Compile Include="src\lagapy\utils\data.py" />
     <Compile Include="src\lagapy\utils\__init__.py" />
+    <Compile Include="src\lagapy\visualization\plot_2d.py" />
+    <Compile Include="src\lagapy\visualization\plot_3d.py" />
+    <Compile Include="src\lagapy\visualization\plot_basic.py" />
+    <Compile Include="src\lagapy\visualization\plot_parameters.py" />
     <Compile Include="src\lagapy\visualization\__init__.py" />
     <Compile Include="src\lagapy\__init__.py" />
     <Compile Include="tests\test_logging.py" />
     <Compile Include="tests\test_package.py" />
     <Compile Include="tests\test_runner.py" />
+    <Compile Include="tests\test_visualization.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\" />
@@ -109,6 +117,7 @@
     <Content Include="requirements-dev.txt" />
     <Content Include="requirements.txt" />
     <Content Include="src\lagapy\py.typed" />
+    <Content Include="src\lagapy\visualization\README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
