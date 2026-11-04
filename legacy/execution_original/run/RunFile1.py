@@ -5,12 +5,12 @@ from pywinauto import Desktop
 from pywinauto.application import Application
 
 
-EXE_PATH = Path(r"C:\Lagamine\VS_Project\Prepro\x64\Debug\Prepro.exe")
+EXE_PATH = Path(r"C:\LagaProgs\Prepro.exe")
 
-REFERENCE_FILE = Path(r"C:\Program Files (x86)\LagaProgs\THOMMES ELIOTT\Diffusion\Test\dif_mesh.LAG")
+REFERENCE_FILE = Path(r"C:\Simulations\example.LAG")
 
 INPUT_FILES = [
-    Path(r"C:\Program Files (x86)\LagaProgs\THOMMES ELIOTT\Diffusion\Test\dif_mesh.LAG"),
+    Path(r"C:\Simulations\example.LAG"),
 ]
 
 

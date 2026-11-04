@@ -24,9 +24,9 @@ mypy
 python -m build
 ```
 
-The tests currently only check the package foundation. No solver correctness
-has been validated; those tests will be created alongside each reader,
-writer or runner.
+The tests include logging and runner unit tests and a small **synthetic**
+executable workflow test. They do not establish correctness with a real
+Lagamine executable or validate FEM convergence; such tests must be opt-in.
 
 ## Coding style
 
