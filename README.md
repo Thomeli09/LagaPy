@@ -1,5 +1,8 @@
 # LagaPy
 
+[![Python](https://img.shields.io/badge/Python-3.15%2B-blue)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-GPL--3.0--or--later-blue)](LICENSE)
+
 **LagaPy** is an open-source Python interface for preparing, running, and analysing
 finite element (FE) simulations with **Lagamine**, the solver developed at the
 University of Liège (ULiège).
