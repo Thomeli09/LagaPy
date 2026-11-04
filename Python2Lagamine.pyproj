@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>41cbe439-7674-441e-9c67-158863a89f3e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Python2Lagamine.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,30 +22,18 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="LagCondition.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LagGeneric.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LagLaw.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LagMesh.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LagPri.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="legacy\LagCondition.py" />
+    <Compile Include="legacy\LagGeneric.py" />
+    <Compile Include="legacy\LagLaw.py" />
+    <Compile Include="legacy\LagMesh.py" />
+    <Compile Include="legacy\LagPri.py" />
+    <Compile Include="legacy\LagSolver.py" />
+    <Compile Include="legacy\Python2Lagamine.py" />
     <Compile Include="src\lagapy\out\lagout.py" />
     <Compile Include="src\lagapy\out\__init__.py" />
     <Compile Include="src\lagapy\run\LagRun.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LagSolver.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Python2Lagamine.py" />
     <Compile Include="src\lagapy\run\RunFile2.py" />
     <Compile Include="src\lagapy\run\RunFile1.py">
       <SubType>Code</SubType>
@@ -75,10 +64,12 @@
     <Compile Include="src\lagapy\utils\__init__.py" />
     <Compile Include="src\lagapy\visualization\__init__.py" />
     <Compile Include="src\lagapy\__init__.py" />
+    <Compile Include="tests\test_package.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\" />
     <Folder Include="examples\" />
+    <Folder Include="legacy\" />
     <Folder Include="src\" />
     <Folder Include="src\lagapy\" />
     <Folder Include="src\lagapy\io\" />
@@ -94,15 +85,21 @@
     <Folder Include="tests\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CHANGELOG.md" />
     <Content Include="CITATION.cff" />
+    <Content Include="CONTRIBUTING.md" />
+    <Content Include="docs\ARCHITECTURE.md" />
+    <Content Include="docs\DEVELOPMENT.md" />
+    <Content Include="docs\FILE_FORMATS.md" />
+    <Content Include="docs\ROADMAP.md" />
+    <Content Include="examples\README.md" />
+    <Content Include="legacy\Architecture.md" />
     <Content Include="LICENSE" />
     <Content Include="pyproject.toml" />
-    <Content Include="Architecture.md" />
     <Content Include="README.md" />
     <Content Include="requirements-dev.txt" />
     <Content Include="requirements.txt" />
     <Content Include="src\lagapy\Architecture.md" />
+    <Content Include="src\lagapy\py.typed" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
