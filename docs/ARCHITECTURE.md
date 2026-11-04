@@ -2,8 +2,8 @@
 
 > **Design proposal, not an implementation inventory.** This document expands
 > the original `Architecture.md` and preserves the roles of its initial
-> `Lag*` classes. The only implemented package module at present is
-> `src/lagapy/__init__.py`.
+> `Lag*` classes. Implemented modules now include `src/lagapy/logging.py` and
+> `src/lagapy/solver/`. Everything else remains a design proposal.
 
 ## Responsibilities
 
@@ -46,12 +46,14 @@ functions. File paths belong to I/O and workflow layers.
 | `conditions/` | Initial conditions, boundary conditions, time-dependent loads |
 | `analysis/` | Problem definition, analysis steps, field/output requests |
 | `io/` | Readers/writers, tokenisation, version- and format-specific adapters |
-| `solver/` | Solver configuration, executable runner, return codes, logs |
+| `solver/` | **Implemented:** external CLI runner, Windows batch generation; future: solver settings and result/convergence checking |
 | `results/` | In-memory results, queries, field histories, derived quantities |
 | `visualization/` | Mesh, field, contour, history and convergence plotting |
-| `utils/` | Small reusable functions without domain-specific responsibilities |
+| `logging.py` | **Implemented:** opt-in console/rotating-file logging with independent levels for the `lagapy` logger |
+| `utils/` | Future small reusable functions without domain-specific responsibilities |
 
-These directories are **future boundaries**, not empty Python packages.
+Except for `solver/`, these package names are **future boundaries**, not
+empty Python packages.
 
 ## Relationship to the original classes
 
@@ -77,8 +79,8 @@ composition, validation, and explicit `read_*`/`write_*` operations.
 model = LagamineProject.from_files("case.lag", "case.dat")
 model.mesh.validate()
 model.write_inputs("run_01")
-result = LagamineRunner(executable="/path/to/lagamine").run("run_01")
-fields = result.read_fields()
+results = LagamineResults.from_files("run_01")
+fields = results.read_fields()
 ```
 
 The eventual public API must be designed from actual working format examples
@@ -99,11 +101,13 @@ and tested class responsibilities; names in this sketch are not committed API.
 
 ## Solver execution contract
 
-Execution is a separate, optional service that will use `subprocess` with a
-list of arguments (`shell=False`), explicit working directory and configurable
-executable path. Capture return codes and diagnostic output. A timeout,
-executable not found, or failed simulation should raise an actionable error.
-No solver process should be triggered by importing `lagapy`.
+Execution is a separate, **implemented** service: `LagamineRunner` in
+`lagapy.solver` uses `subprocess.run` with argument lists (no shell), explicit
+`cwd`, configurable executable paths, optional capture of text output and
+per-stage timeouts. It propagates execution errors and verifies only selected
+inputs. Windows batch generation is available as a separate method. No solver process starts on import. **Not yet implemented:** solver
+convergence checks, output-file readers, progress monitoring, and
+Lagamine-specific integration tests. See [Execution](EXECUTION.md).
 
 ## Post-processing and visualisation
 

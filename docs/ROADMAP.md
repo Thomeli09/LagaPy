@@ -21,7 +21,10 @@ delivery dates. Items are **planned** unless checked off.
 ## Phase 2 — Analysis assembly and execution
 
 - [ ] Generate mutually consistent input files from a single Python project object.
-- [ ] Implement a configurable external Lagamine runner with logs and robust errors.
+- [x] Implement a configurable external Lagamine CLI runner with logs, timeouts,
+  Windows batch files and robust errors, using subprocess only.
+- [x] Add isolated tests with mocked subprocesses and a synthetic executable.
+- [ ] Validate the runner's command-line arguments against real binaries.
 - [ ] Add opt-in end-to-end integration tests for a simple validated model.
 
 ## Phase 3 — Results and visualisation
