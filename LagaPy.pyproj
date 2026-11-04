@@ -23,6 +23,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="examples\visualization_basic.py" />
+    <Compile Include="examples\visualization_advanced.py" />
+    <Compile Include="examples\visualization_shapes.py" />
     <Compile Include="examples\run_lagamine.py" />
     <Compile Include="legacy\execution_original\logging\setup.py" />
     <Compile Include="legacy\execution_original\logging\__init__.py" />
@@ -73,6 +76,7 @@
     <Compile Include="tests\test_logging.py" />
     <Compile Include="tests\test_package.py" />
     <Compile Include="tests\test_runner.py" />
+    <Compile Include="tests\test_visualization.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\" />
