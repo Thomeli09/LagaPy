@@ -21,3 +21,6 @@ if __name__ == "__main__":
         ],
         check=True,
     )
+
+# Il est important que le code soit capable de gérer le cas de blocage de code, vérifie que les fichiers existent avant de lancer l'excécutable
+#, et gère les exceptions pour éviter que le programme ne plante en cas d'erreur.

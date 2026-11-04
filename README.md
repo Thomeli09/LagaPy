@@ -1,234 +1,195 @@
 # LagaPy
 
-**LagaPy** (`lagapy`) is a Python toolkit.
+[![Python](https://img.shields.io/badge/Python-3.15%2B-blue)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-GPL--3.0--or--later-blue)](LICENSE)
 
-The code is organized so that **balance protocols**, **serial communication**, **measurement acquisition**, **data processing**, and **file storage** can be changed independently. It is intended to be easy to extend when you change manufacturer or add a new export format.
+**LagaPy** is an open-source Python interface for preparing, running, and analysing
+finite element (FE) simulations with **Lagamine**, the solver developed at the
+University of Liège (ULiège).
 
-> **Project status:** v0.3.0 — development release. This is a reorganized version of the v0.2.0 rebuild, **not** a drop-in replacement for the original `BalanceLib.py` project. See the [migration guide](docs/MIGRATION.md) and [v0.2 → v0.3 import changes](docs/MIGRATION_V0.2_TO_V0.3.md).
+The long-term goal is to let users describe a simulation with Python objects,
+import an existing Lagamine model, generate the required input files, launch an
+**externally installed** Lagamine executable, then retrieve and visualise the
+results. The intended applications include geotechnical engineering,
+metal forming, and other FE problems supported by Lagamine.
 
-## Disclaimer
+> **Status — early development (`0.1.0.dev0`).** This repository is currently a
+> packaging and documentation foundation, **not yet a working Lagamine interface**.
+> The archived prototype classes are in [`legacy/`](legacy/); readers, writers,
+> execution, and plotting described below are **planned**, not implemented.
 
-This software is provided **as-is**, without warranty of any kind. Before using it in laboratory, industrial, regulated, or safety-critical environments, check it with your **specific scale model, firmware, cable, communication settings, and measurement procedure**.
+## Goals
 
-In particular, the protocol adapters have **not been validated against physical balances** in this development environment. Verify actual readings, units, stable/unstable status, serial replies, and data persistence before relying on the results. The author is not responsible for incorrect measurements, data loss, equipment damage, or other consequences of its use.
+- **Work with existing models:** parse Lagamine input/output files into typed
+  Python objects, preserving information needed for round-trip conversion.
+- **Build models programmatically:** define meshes, material/constitutive laws,
+  initial and boundary conditions, solver settings, and requested outputs.
+- **Write valid solver inputs:** generate compatible files using dedicated,
+  testable format-specific writers rather than assembling strings in user scripts.
+- **Run simulations:** configure and invoke an existing Lagamine executable,
+  managing working directories, subprocess errors, and run logs.
+- **Analyse results:** load relevant output files, extract numerical quantities,
+  and plot FE fields, histories, meshes, and other computed data.
+- **Stay extensible:** support different analysis types and, where necessary,
+  format versions and executable configurations without tying the data model to
+  one file format.
 
-## Features
+## Intended workflow
 
-- **Interchangeable balance protocols:** Mettler Toledo MT-SICS, A&D weighing protocols, and a legacy multiline parser. Add another manufacturer through the `ScaleProtocol` interface.
-- **Separated RS-232 transport:** configure the COM/TTY port, baud rate, parity, data/stop bits, timeout, and line terminator without changing any protocol code.
-- **Structured measurements:** use `Decimal` for precision, UTC timestamps, scale identifiers, stability flags, raw responses, and experiment/specimen metadata.
-- **Multiple recording formats:** CSV, JSON, JSON Lines (`.jsonl` / `.ndjson`), and SQLite (`.sqlite3` / `.db`). Write one acquisition to multiple formats simultaneously.
-- **Acquisition workflows:** read once or sample at intervals, optionally accept stable readings only, stop a session safely, or acquire from separate balances concurrently.
-- **Data tools:** reload saved measurements, compute descriptive statistics, filter by scale/specimen, convert mass units, and calculate relative mass loss.
-- **Optional visualization and reports:** time-series plots with Matplotlib; Markdown and LaTeX specimen summaries.
-- **CLI and GUI:** command-line tools and a basic Tkinter application.
-- **Testing and maintainability:** `src/` package structure, type annotations, simulated serial tests, pytest, Ruff, mypy, and CI configuration.
-
-## Requirements
-
-- **Python 3.13 or later** according to the package metadata, including **Python 3.15** as a target. Python 3.15 has **not yet been tested locally**; the test run delivered with this release uses Python 3.13.
-- A supported balance and an RS-232 connection/USB-to-serial adapter for real acquisition; simulated tests require **no hardware**.
-- **pySerial** is installed automatically with the package.
-- **Matplotlib** is optional, for plotting only. NumPy and pandas are **not needed** for basic acquisition or recording.
-- Development/testing tools are declared in the `dev` optional dependency group.
-
-## Installation
-
-Clone the repository (or extract the distributed ZIP):
-
-```bash
-git clone https://github.com/Thomeli09/balance_measurement.git
-cd balance_measurement
+```text
+Existing Lagamine files        Python-defined FE model
+           |                            |
+           +------------+---------------+
+                        |
+                 Read / construct
+                        |
+                Python model objects
+                        |
+                Validate / modify
+                        |
+                 Write input files
+                        |
+             External Lagamine solver
+                        |
+                Read output files
+                        |
+              Analyse / visualise
 ```
 
-Create a virtual environment with **Python 3.15** on Windows PowerShell:
+The file formats mentioned in the original design notes include `.lag`, `.dat`,
+`.pri`, `.dep`, `.ipn`, and `.ipe`. Their exact structure, relationships, and
+variant-dependent semantics must be confirmed against representative Lagamine
+files before parsers and writers are implemented. See
+[File formats](docs/FILE_FORMATS.md).
+
+## Project layout
+
+```text
+LagaPy/
+├── README.md                   # Project overview and status
+├── CITATION.cff                # Citation metadata
+├── CHANGELOG.md                # Changes by release
+├── CONTRIBUTING.md             # Contribution guidelines
+├── LICENSE                     # GPL-3.0-or-later
+├── pyproject.toml              # Packaging, dependencies, tools
+├── requirements.txt            # Editable installation
+├── requirements-dev.txt        # Development and plotting extras
+├── src/
+│   └── lagapy/
+│       ├── __init__.py         # Importable package foundation
+│       └── py.typed            # Marker for typed public interfaces
+├── docs/
+│   ├── ARCHITECTURE.md         # Proposed subsystem boundaries
+│   ├── DEVELOPMENT.md          # Setup, tests, coding conventions
+│   ├── FILE_FORMATS.md         # Formats to investigate
+│   └── ROADMAP.md              # Implementation order
+├── examples/README.md         # Future runnable examples
+├── tests/                      # Initial smoke tests; future fixtures
+└── legacy/                     # Original prototype classes, unchanged
+```
+
+The future modules (such as `mesh`, `materials`, `conditions`, `io`, `solver`,
+`results`, and `visualization`) are documented in
+[Architecture](docs/ARCHITECTURE.md). They have **not** been created as empty
+public APIs: they will be introduced with tested implementations.
+
+## Requirements and installation
+
+- **Python 3.15 or newer** is the declared target. Python 3.15 was released in
+  October 2026; compatibility with it still needs testing in the target environment.
+- A local Lagamine executable and any required licences/configuration will be
+  needed **later**, when execution support is added. The executable and Lagamine
+  itself are **not shipped** or licensed as part of LagaPy.
+- No third-party runtime libraries are currently required for the package stub.
+
+On Windows PowerShell:
 
 ```powershell
+git clone https://github.com/Thomeli09/lagapy.git
+cd lagapy
 py -3.15 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-```
-
-On Linux/macOS, replace those first two commands with `python3.15 -m venv .venv` and `source .venv/bin/activate`.
-
-The requirement files deliberately reuse the dependencies declared in `pyproject.toml`, rather than maintaining duplicated dependency lists:
-
-| File | Installs | Recommended use |
-|---|---|---|
-| `requirements.txt` | `-e .` | Editable application install for normal use |
-| `requirements-dev.txt` | `-e .[dev,plot]` | Editable install with pytest, Ruff, mypy, build and plotting |
-
-For development, use **either** `python -m pip install -r requirements-dev.txt` **or** `python -m pip install -e ".[dev,plot]"`. For a regular non-editable installation, use `python -m pip install .`.
-
-## Repository layout
-
-The main implementation is subdivided by **responsibility**, rather than placing all Python modules directly in the package root:
-
-```text
-balance_measurement/
-├── pyproject.toml                 # Package metadata and dependencies (source of truth)
-├── requirements.txt               # Editable runtime installation
-├── requirements-dev.txt           # Editable development + plotting installation
-├── src/
-│   └── balance_measurement/
-│       ├── __init__.py            # Convenient public Python API
-│       ├── __main__.py            # Enables python -m balance_measurement
-│       ├── core/                  # Measurement, Specimen, exceptions
-│       ├── scale/
-│       │   ├── client.py          # High-level instrument commands
-│       │   ├── protocols/         # Mettler Toledo, A&D, protocol registry
-│       │   └── transport/         # RS-232 and abstract transport
-│       ├── acquisition/           # Measurement sessions and scheduling
-│       ├── storage/               # CSV, JSON, JSONL, SQLite readers/writers
-│       ├── data/                  # Statistics, filtering, mass conversions
-│       ├── config/                # TOML configuration models and loader
-│       ├── times/                 # Stopwatch / elapsed-time utilities
-│       ├── logging/               # Application logging setup
-│       ├── visualization/         # Optional plotting functions
-│       ├── reporting/             # Markdown / LaTeX reports
-│       ├── interfaces/            # CLI and Tkinter GUI
-│       └── utils/                 # Small generic helpers (decimal parsing)
-├── examples/                      # Config and runnable Python examples
-├── tests/                         # Unit and opt-in hardware tests
-├── docs/                          # Architecture, conventions, migration
-└── resources/                     # Reference assets from the original project
-```
-
-See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for the internal dependencies and how to extend a protocol or recorder.
-
-## Quick start
-
-First, list the available protocols and serial ports:
-
-```powershell
-balance-measurement protocols
-balance-measurement ports
-```
-
-Read **one** value from a Mettler Toledo balance connected to `COM3`:
-
-```powershell
-balance-measurement read --port COM3 --baudrate 9600 --protocol mettler-toledo
-```
-
-For an A&D balance, use `--protocol a-and-d` and the settings required by **that specific instrument**. The two manufacturers may use different serial command/reply formats and configuration.
-
-### Acquire measurements and save them
-
-Record 100 attempts at a half-second interval in **both** CSV and JSONL:
-
-```powershell
-balance-measurement capture --port COM3 --protocol mettler-toledo `
-  --count 100 --interval 0.5 --stable-only `
-  --output measurements.csv --output measurements.jsonl `
-  --metadata '{"specimen_id":"S001","experiment":"drying"}'
-```
-
-Alternatively, share the experimental settings with a TOML file:
-
-```powershell
-balance-measurement capture --config examples/settings.toml
-```
-
-Edit `examples/settings.toml` before running: its output paths are resolved **relative to that file**. Use `--forever` instead of `--count` for a session that ends with Ctrl+C.
-
-### Python API
-
-The following script changes **protocol** and **storage** independently:
-
-```python
-from pathlib import Path
-
-from balance_measurement import (
-    AcquisitionSession,
-    AcquisitionSettings,
-    ScaleClient,
-    SerialSettings,
-    SerialTransport,
-    default_registry,
-)
-from balance_measurement.storage import default_recorder_registry
-
-protocol = default_registry().create("mettler-toledo")  # or "a-and-d"
-transport = SerialTransport(SerialSettings(port="COM3", baudrate=9600))
-client = ScaleClient(transport, protocol, scale_id="lab-scale-1")
-
-recorders = default_recorder_registry()
-with AcquisitionSession(
-    client,
-    [recorders.create(Path("weights.csv")), recorders.create(Path("weights.sqlite3"))],
-    AcquisitionSettings(count=20, interval_seconds=1.0),
-) as session:
-    for measurement in session.collect():
-        if measurement is not None:
-            print(measurement.timestamp, measurement.value, measurement.unit)
-```
-
-## Examples and tests
-
-Explore `examples/custom_protocol.py`, `examples/multiscale.py`, `examples/specimen_report.py`, and `examples/settings.toml`.
-
-Install development dependencies and run the hardware-independent test suite:
-
-```powershell
 python -m pip install -r requirements-dev.txt
-python -m pytest -q
 ```
 
-The **real-hardware** integration test is opt-in. It only requests a measurement: it does not automatically tare or zero the balance. After confirming the equipment and serial settings, on PowerShell:
+On Linux/macOS:
 
-```powershell
-$env:BALANCE_PORT = "COM3"
-$env:BALANCE_PROTOCOL = "mettler-toledo"
-python -m pytest -q -m hardware
+```bash
+python3.15 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-dev.txt
 ```
 
-On Linux/macOS use `export BALANCE_PORT=/dev/ttyUSB0` and `export BALANCE_PROTOCOL=mettler-toledo`. See [hardware validation](docs/HARDWARE_VALIDATION.md) before testing on a real instrument.
+`requirements.txt` installs the project in editable mode (`-e .`), while
+`requirements-dev.txt` installs `-e .[dev,plot]`. Dependency definitions live
+in `pyproject.toml`; the `plot` extra is reserved for future plotting features.
 
-## Usage
+### Check the package foundation
 
-Analyze measurements that were already saved:
-
-```powershell
-balance-measurement stats measurements.csv
-balance-measurement plot measurements.csv --output measurements.png
-balance-measurement gui
-```
-
-The plotting command requires the optional `plot` extra. Tkinter must also be installed and supported by your desktop Python environment for the GUI to work.
-
-For developers, the other useful commands are:
-
-```powershell
+```bash
+python -c "import lagapy; print(lagapy.__version__)"
+python -m pytest
 ruff check .
 ruff format --check .
-mypy src/balance_measurement
 python -m build
 ```
 
-To add a scale or a new file format, see [Architecture](docs/ARCHITECTURE.md), [Conventions](docs/CONVENTIONS.md), and [Development](docs/DEVELOPMENT.md). To migrate from the original software or from v0.2.0, follow the respective [migration notes](docs/MIGRATION.md).
+**There is not yet a runnable FE simulation example or a CLI.** The first
+functional milestone is reading and writing a single, well-documented Lagamine
+format with fixture-based tests.
 
-## Contributing
+## Design principles
 
-Contributions are welcome, especially for additional weighing protocols, USB/RS-232 compatibility, storage formats, tests with actual devices, error handling, documentation, and visualization tools. Please follow the existing Python naming and typing conventions, add tests for new behavior, and discuss large changes in an issue before implementing them.
+1. **Separate the FE model from its file representation.** Meshes, laws,
+   conditions, and results should be usable without any particular file reader.
+2. **Keep parsing and writing symmetrical.** Where feasible, use read-write-read
+   round-trip tests and clearly report unsupported constructs.
+3. **Make execution optional.** Users should be able to inspect or generate
+   files without having Lagamine installed.
+4. **Prefer explicit types and naming.** Public names will follow PEP 8, while
+   mapping the original `LagMesh`, `LagLaw`, `LagCond`, `LagSolver`, and
+   `LagPri` ideas to modern, focused objects.
+5. **Keep numerical and plotting dependencies optional** until they are needed.
+
+## Documentation and contributions
+
+Begin with the [architecture](docs/ARCHITECTURE.md),
+[file format inventory](docs/FILE_FORMATS.md), and
+[roadmap](docs/ROADMAP.md). Developers should read
+[development instructions](docs/DEVELOPMENT.md) and
+[contribution guidelines](CONTRIBUTING.md).
+
+To implement accurate readers and writers, the project will need *shareable,
+representative* Lagamine input/output examples (including expected data and
+their interpretation). Do not commit confidential simulation models or
+proprietary solver binaries.
 
 ## Citation
 
-If you use `lagapy` in scientific or published work, please cite the project. The reference metadata is stored in [`CITATION.cff`](CITATION.cff).
+If LagaPy is used in research, please cite the software using
+[`CITATION.cff`](CITATION.cff). The provisional citation is:
 
 ```bibtex
 @software{Thommes_LagaPy_2026,
   author  = {Thommes, Eliott},
-  title   = {LagaPy: },
+  title   = {LagaPy: Python tools for Lagamine finite element workflows},
   year    = {2026},
-  version = {0.3.0},
+  version = {0.1.0.dev0},
   url     = {https://github.com/Thomeli09/lagapy}
 }
 ```
 
-Author: **Eliott Thommes** · ORCID: [0009-0005-0697-2438](https://orcid.org/0009-0005-0697-2438)
+Author: **Eliott Thommes** · [ORCID 0009-0005-0697-2438](https://orcid.org/0009-0005-0697-2438).
 
-## License
+## Licence and disclaimer
 
-This project is licensed under the **MIT License**. Copyright © 2026 Eliott Thommes. See [`LICENSE`](LICENSE) for the full text.
+LagaPy is licensed under the **GNU General Public License, version 3 or later
+(GPL-3.0-or-later)**. See [`LICENSE`](LICENSE). This licence applies to LagaPy;
+it does **not** grant permission to redistribute or use the separate Lagamine
+executable beyond its own terms.
+
+LagaPy is provided *as-is*, without warranty. It is under development and
+must be independently validated before relying on results in research,
+engineering design, or safety-critical applications. The numerical solution
+is produced by Lagamine, not by LagaPy itself.
